@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Giriş - Şeker Çark</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(180deg,#ff9aee 0%,#e879f9 30%,#a855f7 70%,#7c3aed 100%);color:#fff;min-height:100vh;padding:0 0 40px}
+.header{background:linear-gradient(135deg,#ff9aee,#c026d3);padding:22px 16px 26px;text-align:center;border-bottom-left-radius:32px;border-bottom-right-radius:32px;box-shadow:0 8px 25px rgba(0,0,0,.25);position:relative;overflow:hidden}
+.header:before{content:'🍭 🍬';position:absolute;left:12px;top:10px;font-size:24px}.header:after{content:'🍬 🍭';position:absolute;right:12px;top:10px;font-size:24px}
+.header h1{margin:0;font-size:38px;text-shadow:0 2px 0 rgba(0,0,0,.2)}.header p{margin:6px 0 0;opacity:.9;font-size:14px}
+.card{background:#fff;color:#111;border-radius:28px;padding:20px;margin:18px 14px;box-shadow:0 10px 25px rgba(0,0,0,.22)}
+.tabs{display:flex;gap:8px;background:#fdf2f8;padding:6px;border-radius:999px}.tabs button{flex:1;padding:12px;border:0;border-radius:999px;font-weight:900;background:transparent;color:#a21caf;cursor:pointer}.tabs button.on{background:linear-gradient(135deg,#ff9aee,#a855f7);color:#fff;box-shadow:0 4px 10px rgba(168,85,247,.4)}
+input{width:100%;padding:14px;border:2px solid #f0abfc;border-radius:16px;margin-top:12px;font-size:15px;outline:none}
+input:focus{border-color:#a855f7}
+.btn{width:100%;padding:16px;border:0;border-radius:999px;font-weight:900;font-size:18px;background:linear-gradient(135deg,#ffd700,#ff9aee);color:#5b0050;margin-top:14px;box-shadow:0 6px 0 #b3005e;cursor:pointer}
+.btn:active{transform:translateY(3px)}
+.kucuk{text-align:center;font-size:13px;color:#666;margin-top:12px;line-height:1.5}
+.ozellik{display:flex;gap:8px;margin-top:14px}.ozellik div{flex:1;background:#fdf2f8;border-radius:16px;padding:10px;text-align:center;font-size:12px;font-weight:800;color:#7c3aed}
+.ozellik div span{display:block;font-size:22px}
+</style></head><body>
+<div class="header"><h1>🍬 Şeker Çark 🍭</h1><p>Günlük Hediyeler • Çark • Kazı Kazan</p></div>
+<div class="card">
+<div class="tabs"><button id="tG" class="on" onclick="mod('g')">GİRİŞ YAP</button><button id="tK" onclick="mod('k')">KAYIT OL</button></div>
+<input id="u" placeholder="👤 Kullanıcı adı"><input id="p" type="password" placeholder="🔒 Şifre"><p id="msg" style="text-align:center;font-weight:900;color:#c026d3"></p><button class="btn" onclick="go()" id="anaBtn">GİRİŞ YAP</button>
+<p class="kucuk">Kayıt olunca 0 TL ile başlarsın.<br>Bilgilerin güvenle saklanır.</p>
+</div>
+<div class="card" style="padding:14px"><div class="ozellik"><div><span>🎡</span>Şans Çarkı</div><div><span>🎟️</span>Kazı Kazan</div><div><span>🎁</span>Günlük Hediye</div></div></div>
+<script>
+var FB='https://sanscark-74c96-default-rtdb.europe-west1.firebasedatabase.app';
+var m='g';
+function mod(x){ m=x; document.getElementById('tG').className=(x==='g'?'on':''); document.getElementById('tK').className=(x==='k'?'on':''); document.getElementById('anaBtn').textContent=(x==='g'?'GİRİŞ YAP':'KAYIT OL'); }
+async function go(){ var u=document.getElementById('u').value.trim(), p=document.getElementById('p').value, msg=document.getElementById('msg'); if(!u||!p){ msg.textContent='Kullanıcı adı ve şifre gerekli'; return; } msg.textContent='Kontrol ediliyor...'; try{ var r=await fetch(FB+'/users.json'); var users=await r.json()||{}; if(m==='k'){ if(users[u]){ msg.textContent='Bu kullanıcı adı alınmış'; return; } await fetch(FB+'/users/'+encodeURIComponent(u)+'.json',{method:'PUT',body:JSON.stringify({username:u,sifre:p,bakiye:0,kayitTarihi:Date.now(),sonGorunme:Date.now(),engelli:false})}); localStorage.setItem('ss_user',u); location.href='index.html'; } else { if(!users[u]){ msg.textContent='Kullanıcı bulunamadı, önce KAYIT OL'; return; } if(users[u].sifre!==p){ msg.textContent='Şifre yanlış'; return; } if(users[u].engelli){ msg.textContent='Hesabın engellendi.'; return; } await fetch(FB+'/users/'+encodeURIComponent(u)+'/sonGorunme.json',{method:'PUT',body:JSON.stringify(Date.now())}); localStorage.setItem('ss_user',u); location.href='index.html'; } }catch(e){ msg.textContent='Bağlantı hatası, tekrar dene'; } }
+if(localStorage.getItem('ss_user')) location.href='index.html';
+fetch(FB+'/bakim.json').then(function(r){return r.json()}).then(function(v){ if(v===true) location.href='bakim.html'; });
+</script></body></html>
