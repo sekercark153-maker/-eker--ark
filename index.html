@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#8067e8">
+  <title>Renkli Oyun Dünyası</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#home"><span class="brand-mark">✦</span><span>Oyun<span class="brand-light">Dünyası</span></span></a>
+      <nav id="sideNav">
+        <a href="#home" data-page="home">⌂ <span>Ana Sayfa</span></a>
+        <a href="#wallet" data-page="wallet">◈ <span>Bakiye</span></a>
+        <a href="#deposit" data-page="deposit">＋ <span>Para Yükleme</span></a>
+        <a href="#withdraw" data-page="withdraw">↗ <span>Para Çekme</span></a>
+        <a href="#support" data-page="support">☏ <span>Canlı Destek</span></a>
+        <a href="#gift" data-page="gift">🎁 <span>Günlük Hediye</span></a>
+        <a href="#profile" data-page="profile">♙ <span>Profilim</span></a>
+        <a href="#games" data-page="games">▦ <span>Oyunlar</span></a>
+        <a href="#wheel" data-page="wheel">◉ <span>Çark</span></a>
+        <a href="#scratch" data-page="scratch">▧ <span>Kazı Kazan</span></a>
+        <a href="#admin" data-page="admin">⚙ <span>Yönetici Paneli</span></a>
+      </nav>
+      <div class="sidebar-note">Bu sürüm yalnızca arayüz demosudur. Gerçek para işlemi yapmaz.</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" id="menuBtn" aria-label="Menüyü aç">☰</button>
+        <div><div class="eyebrow">MERHABA 👋</div><strong id="pageHeading">Ana Sayfa</strong></div>
+        <div class="top-actions">
+          <div class="balance-pill">₺ <span id="headerBalance">0,00</span> <small>DEMO</small></div>
+          <button class="avatar" data-go="profile">U</button>
+        </div>
+      </header>
+
+      <section id="page-home" class="page active">
+        <div class="hero">
+          <div class="hero-copy"><span class="tag">RENKLİ DÜNYANA HOŞ GELDİN</span><h1>Bugün hangi<br><em>oyunu</em> seçiyorsun?</h1>
+            <p>Oyunları keşfet, günlük hediyeni al ve eğlenceli mini oyunlara göz at.</p>
+            <button class="primary" data-go="games">Oyunları keşfet <span>→</span></button>
+          </div>
+          <div class="hero-art"><div class="orb orb-one">✦</div><div class="orb orb-two">★</div><div class="gift-box">🎁</div><div class="spark s1">✧</div><div class="spark s2">✦</div></div>
+        </div>
+        <div class="section-head"><div><div class="eyebrow">SENİN ALANIN</div><h2>Hızlı erişim</h2></div><a href="#games">Tüm oyunlar →</a></div>
+        <div class="quick-grid">
+          <button class="quick-card pink" data-go="gift"><span>🎁</span><b>Günlük Hediye</b><small>Günün sürprizini gör</small></button>
+          <button class="quick-card purple" data-go="wheel"><span>🎡</span><b>Şans Çarkı</b><small>Eğlence için çevir</small></button>
+          <button class="quick-card blue" data-go="scratch"><span>🎟️</span><b>Kazı Kazan</b><small>Demo kartını aç</small></button>
+          <button class="quick-card mint" data-go="profile"><span>👤</span><b>Profilim</b><small>Hesabını düzenle</small></button>
+        </div>
+        <div class="section-head"><div><div class="eyebrow">VAKİT GEÇİR</div><h2>Popüler oyunlar</h2></div></div>
+        <div class="game-grid" id="homeGames"></div>
+      </section>
+
+      <section id="page-wallet" class="page">
+        <div class="page-intro"><div class="eyebrow">HESAP ÖZETİ</div><h1>Bakiyem</h1><p>Bu ekrandaki tutarlar yalnızca örnek arayüz verisidir.</p></div>
+        <div class="wallet-card"><span>DEMO BAKİYE</span><strong>₺ <b id="walletBalance">0,00</b></strong><small>Gerçek para değeri yoktur.</small></div>
+        <div class="panel"><h3>Son hareketler</h3><div id="transactions" class="transactions"><p class="muted">Henüz demo hareketi yok.</p></div></div>
+      </section>
+
+      <section id="page-deposit" class="page">
+        <div class="page-intro"><div class="eyebrow">DEMO EKRANI</div><h1>Para yükleme</h1><p>Gerçek ödeme alınmaz. Bu sayfa yalnızca tasarım önizlemesidir.</p></div>
+        <div class="panel form-panel"><div class="notice">ⓘ Ödeme altyapısı bağlı değildir. Kart veya banka bilgisi girmeyin.</div><label>Demo tutarı (₺)</label><div class="amount-options"><button data-amount="100">₺100</button><button data-amount="250">₺250</button><button data-amount="500">₺500</button><button data-amount="1000">₺1.000</button></div><input id="depositAmount" type="number" min="1" placeholder="Tutarı yazın"><button class="primary full" id="depositBtn">Demo ekranını görüntüle</button><p class="muted" id="depositMsg"></p></div>
+      </section>
+
+      <section id="page-withdraw" class="page">
+        <div class="page-intro"><div class="eyebrow">DEMO EKRANI</div><h1>Para çekme</h1><p>Gerçek para çekme veya banka transferi yapılmaz.</p></div>
+        <div class="panel form-panel"><div class="notice">ⓘ Bu prototipte ödeme/çekim işlemleri kapalıdır.</div><label>Demo tutarı (₺)</label><input type="number" placeholder="Tutar"><label>İşlem durumu</label><div class="disabled-field">Demo — gerçek işlem yapılamaz</div><button class="primary full" disabled>Para çekme kullanılamıyor</button></div>
+      </section>
+
+      <section id="page-support" class="page">
+        <div class="page-intro"><div class="eyebrow">YARDIM MERKEZİ</div><h1>Canlı destek</h1><p>Bu örnek ekranda mesajlar yalnızca tarayıcınızda görüntülenir.</p></div>
+        <div class="chat-box"><div class="chat-head"><span class="online-dot"></span><div><b>Destek ekibi</b><small>Demo sohbet</small></div></div><div class="chat-messages" id="chatMessages"><div class="bubble agent">Merhaba! Size nasıl yardımcı olabiliriz?</div></div><form id="chatForm" class="chat-form"><input id="chatInput" placeholder="Mesajınızı yazın..." autocomplete="off"><button class="primary">Gönder</button></form></div>
+      </section>
+
+      <section id="page-gift" class="page">
+        <div class="page-intro"><div class="eyebrow">HER GÜN YENİ BİR SÜRPRİZ</div><h1>Günlük hediye 🎁</h1><p>Günlük hediye kutusunu demo olarak açabilirsin.</p></div>
+        <div class="gift-panel"><div class="big-gift">🎁</div><h2>Sürpriz kutun hazır!</h2><p>Bu ödülün gerçek veya parasal değeri yoktur.</p><button class="primary" id="giftBtn">Kutuyu aç</button><div id="giftResult" class="result"></div></div>
+      </section>
+
+      <section id="page-profile" class="page">
+        <div class="page-intro"><div class="eyebrow">HESAP AYARLARI</div><h1>Kullanıcı profilim</h1></div>
+        <div class="panel profile-panel"><div class="profile-avatar">U</div><label>Kullanıcı adı</label><input id="profileName" value="Yeni Kullanıcı"><label>E-posta</label><input id="profileEmail" type="email" placeholder="ornek@mail.com"><button class="primary" id="saveProfile">Profili kaydet</button><p id="profileMsg" class="muted"></p></div>
+      </section>
+
+      <section id="page-games" class="page">
+        <div class="page-intro"><div class="eyebrow">OYUN KÜTÜPHANESİ</div><h1>Tüm oyunlar</h1><p>Yeni oyunlar yönetici panelindeki demo listesine eklenebilir.</p></div>
+        <div class="game-grid" id="allGames"></div>
+      </section>
+
+      <section id="page-wheel" class="page">
+        <div class="page-intro"><div class="eyebrow">MİNİ OYUN</div><h1>Renkli çark 🎡</h1><p>Sonuçlar yalnızca eğlence amaçlıdır; parasal ödül veya gerçek kazanç yoktur.</p></div>
+        <div class="wheel-panel"><div class="pointer">▼</div><div class="wheel" id="wheel"><div class="wheel-center">✦</div></div><button class="primary" id="spinBtn">Çarkı çevir</button><div id="wheelResult" class="result"></div></div>
+      </section>
+
+      <section id="page-scratch" class="page">
+        <div class="page-intro"><div class="eyebrow">MİNİ OYUN</div><h1>Kazı kazan 🎟️</h1><p>Bu kart görsel bir demodur; para veya parasal ödül içermez.</p></div>
+        <div class="scratch-panel"><div class="scratch-ticket"><div class="ticket-top">ŞANSLI KART <span>✦</span></div><div class="ticket-prize" id="scratchPrize">?</div><button id="scratchBtn">KARTI AÇ</button></div><div id="scratchResult" class="result"></div></div>
+      </section>
+
+      <section id="page-auth" class="page">
+        <div class="auth-card"><div class="brand big-brand"><span class="brand-mark">✦</span> Oyun Dünyası</div><h1>Hoş geldin!</h1><p>Arayüz önizlemesi için giriş veya kayıt görünümü.</p><div class="tabs"><button class="selected" data-auth="login">Giriş yap</button><button data-auth="register">Kayıt ol</button></div><label>Kullanıcı adı / E-posta</label><input placeholder="Bilgilerinizi girin"><label>Şifre</label><input type="password" placeholder="Şifreniz"><button class="primary full" id="authDemo">Demo olarak devam et</button><small>Gerçek hesap oluşturma ve kimlik doğrulama bu statik demoda etkin değildir.</small></div>
+      </section>
+
+      <section id="page-admin" class="page">
+        <div class="page-intro"><div class="eyebrow">YÖNETİM</div><h1>Admin paneli</h1><p>Bu yalnızca örnek arayüzdür. Güvenli yönetici girişi ve sunucu yetkileri eklenmeden yayınlamayın.</p></div>
+        <div class="admin-stats"><div class="stat"><small>Oyun sayısı</small><b id="gameCount">4</b></div><div class="stat"><small>Demo kullanıcı</small><b>1</b></div><div class="stat"><small>Ödeme durumu</small><b>Kapalı</b></div></div>
+        <div class="panel form-panel"><h3>Yeni oyun ekle (demo)</h3><label>Oyun adı</label><input id="newGameName" placeholder="Örn. Hafıza Oyunu"><label>Emoji</label><input id="newGameEmoji" placeholder="🧩" maxlength="4"><button class="primary" id="addGame">Oyun listesine ekle</button><p class="muted" id="adminMsg"></p></div>
+      </section>
+
+      <footer>© 2026 Oyun Dünyası · Arayüz demosu</footer>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
