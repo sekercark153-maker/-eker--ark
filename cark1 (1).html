@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>1. Çark - COIN ARENA</title><style>
+*{box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#ffe4f1,#fff7d6,#d9f9ff,#ffe4f1);padding:16px}
+header{display:flex;justify-content:space-between;align-items:center;max-width:800px;margin:0 auto 16px}header button{background:white;border:2px solid #ffd1e3;padding:10px 14px;border-radius:999px;font-weight:800;color:#7a2e5a;cursor:pointer}.bakiye{background:#7ee8a2;color:#064e2b;padding:10px 16px;border-radius:999px;font-weight:900;border:3px solid white}
+.wrap{max-width:480px;margin:0 auto;text-align:center;background:white;border-radius:28px;padding:20px;border:3px solid #ffb3d1;box-shadow:0 12px 30px rgba(255,120,180,.25)}
+.wheelbox{position:relative;width:300px;height:300px;margin:10px auto}.ok{position:absolute;top:-6px;left:50%;transform:translateX(-50%);z-index:5;font-size:32px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.2))}canvas{width:300px;height:300px;border-radius:50%;border:4px solid white;box-shadow:0 8px 20px rgba(255,100,170,.3)}
+.odultablo{background:#fff5f9;border:2px solid #ffd1e3;border-radius:16px;padding:12px;margin:12px 0;color:#7a2e5a;font-size:13px;line-height:1.6;text-align:left}.cev{width:100%;background:#ff2e63;color:white;border:none;padding:16px;border-radius:16px;font-size:19px;font-weight:900;cursor:pointer;margin-top:10px}.cev:disabled{opacity:.5}.geri{width:100%;background:#ffe4f1;color:#7a2e5a;border:none;padding:13px;border-radius:16px;font-weight:900;cursor:pointer;margin-top:10px}#sonuc{min-height:28px;font-weight:900;margin:10px 0;font-size:17px}
+</style><script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script><script>const firebaseConfig={apiKey:"AIzaSyD8WfOZ-JmuVZkisaK7rcpLqvYGyhPSN9o",authDomain:"coin-arena-3f0f9.firebaseapp.com",databaseURL:"https://coin-arena-3f0f9-default-rtdb.europe-west1.firebasedatabase.app",projectId:"coin-arena-3f0f9",storageBucket:"coin-arena-3f0f9.firebasestorage.app",messagingSenderId:"541797577041",appId:"1:541797577041:web:9378f7ccbda8857946a370"}; if(typeof firebase!=='undefined' && !firebase.apps.length){firebase.initializeApp(firebaseConfig);} const db=(typeof firebase!=='undefined')?firebase.database():null;</script></head><body><div id="bakimOverlay" style="display:none;position:fixed;inset:0;background:#0f172a;z-index:99999;align-items:center;justify-content:center;text-align:center;color:white;font-size:26px;font-weight:900;padding:20px;flex-direction:column;gap:12px;touch-action:none"><div style="font-size:60px">🔧</div><div>SİTE ŞU ANDA BAKIMDA</div><div style="font-size:15px;font-weight:400;color:#cbd5e1">Lütfen daha sonra tekrar dene kanka</div></div>
+<header><button onclick="location.href='anasayfa.html'">← Ana Sayfaya Dön</button><div class="bakiye">🪙 <span id="bakiye">0</span> COIN</div></header>
+<div class="wrap"><h2 style="color:#7a2e5a;margin:0">1. Çark - 20 COIN</h2>
+<div class="wheelbox"><div class="ok">🔻</div><canvas id="cark" width="600" height="600"></canvas></div>
+<div class="odultablo"><b>20 Bölüm:</b> 4× 1 COIN (%39) • 4× 5 COIN (%28) • 4× 10 COIN (%17) • 4× 20 COIN (%10) • 2× 50 COIN (%5) • 2× 100 COIN (%1)<br><small>Çevirme: 20 COIN • Kazandığın ödül bakiyene anında eklenir</small></div>
+<div id="sonuc"></div>
+<button class="cev" id="cevirBtn" onclick="cevir()">ÇEVİR - 20 COIN</button><button class="geri" onclick="location.href='anasayfa.html'">Ana Sayfaya Dön</button></div>
+<script>
+var FIYAT=20;
+// 20 bölüm: 4x1, 4x5, 4x10, 4x20, 2x50, 2x100
+var BOLUM=[1,5,10,20,50,100,1,5,10,20,1,5,10,20,50,100,1,5,10,20];
+var RENK={1:'#fde68a',5:'#a7f3d0',10:'#e9d5ff',20:'#bfdbfe',50:'#fda4af',100:'#ff2e63'};
+var canvas=document.getElementById('cark');var ctx=canvas.getContext('2d');var aci=0;
+function ciz(){
+  ctx.clearRect(0,0,600,600);ctx.save();ctx.translate(300,300);ctx.rotate(aci);
+  for(var i=0;i<20;i++){
+    var s=i*18*Math.PI/180; var e=(i+1)*18*Math.PI/180;
+    ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,290,s,e);ctx.closePath();ctx.fillStyle=RENK[BOLUM[i]];ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=3;ctx.stroke();
+    ctx.save();ctx.rotate(s+9*Math.PI/180);ctx.fillStyle=(BOLUM[i]===100?'white':'#7a2e5a');ctx.font='900 34px Arial';ctx.textAlign='right';ctx.fillText(BOLUM[i],265,12);ctx.restore();
+  }
+  ctx.beginPath();ctx.arc(0,0,62,0,Math.PI*2);ctx.fillStyle='white';ctx.fill();ctx.strokeStyle='#ffb3d1';ctx.lineWidth=4;ctx.stroke();
+  ctx.fillStyle='#ff2e63';ctx.font='900 36px Arial';ctx.textAlign='center';ctx.fillText('🍬',0,13);ctx.restore();
+}
+try{ciz();}catch(e){} window.addEventListener('load',function(){try{ciz();}catch(e){}});
+function oku(){try{return JSON.parse(localStorage.getItem('coin_users')||'{}')}catch(e){return {}}}
+function bakiyeGuncelle(){var u=oku();var aktif=localStorage.getItem('coin_aktif');var b=u[aktif]?u[aktif].bakiye:0;document.getElementById('bakiye').textContent=b;}
+function bakiyeCanli(){var kadi=localStorage.getItem('coin_aktif');if(!kadi)return;if(typeof db!=='undefined'&&db){db.ref('coin_users/'+kadi+'/bakiye').on('value',function(s){var v=s.val();if(v!==null){document.getElementById('bakiye').textContent=v;}});}}
+function bakimKontrol(){if(typeof db==='undefined'||!db)return;db.ref('coin_bakim').on('value',function(s){var v=s.val();var ov=document.getElementById('bakimOverlay');if(!ov)return;if(v==='1'){ov.style.display='flex';localStorage.setItem('coin_bakim','1');document.body.style.overflow='hidden';}else{ov.style.display='none';localStorage.setItem('coin_bakim','0');document.body.style.overflow='';}});}
+bakiyeGuncelle();bakiyeCanli();bakimKontrol();
+var donuyor=false;
+function odulSec(){
+  var r=Math.random()*100;
+  if(r<39) return 1;
+  if(r<39+28) return 5;
+  if(r<39+28+17) return 10;
+  if(r<39+28+17+10) return 20;
+  if(r<39+28+17+10+5) return 50;
+  return 100;
+}
+function cevir(){
+  if(donuyor) return;
+  var aktif=localStorage.getItem('coin_aktif');if(!aktif){document.getElementById('sonuc').textContent='Önce giriş yap kanka';return;}
+  var u=oku();var b=u[aktif]?u[aktif].bakiye:0;
+  if(b<FIYAT){document.getElementById('sonuc').textContent='Bakiyen yetersiz!';document.getElementById('sonuc').style.color='#e11d48';return;}
+  // 20 COIN ANINDA DÜŞ
+  if(typeof db!=='undefined'&&db){db.ref('coin_users/'+aktif+'/bakiye').transaction(function(cur){return Math.max(0,(cur||0)-FIYAT);});}
+  u[aktif].bakiye=b-FIYAT;localStorage.setItem('coin_users',JSON.stringify(u));bakiyeGuncelle();
+  document.getElementById('sonuc').textContent='Çark dönüyor...';document.getElementById('sonuc').style.color='#7a2e5a';
+  donuyor=true;document.getElementById('cevirBtn').disabled=true;
+  var hedefOdul=odulSec();
+  // Bu ödüle ait bir bölümü rastgele seç
+  var adaylar=[];for(var i=0;i<20;i++){if(BOLUM[i]===hedefOdul) adaylar.push(i);}
+  var hedefBolum=adaylar[Math.floor(Math.random()*adaylar.length)];
+  // Ok üstte (270 derece). Hedef bölümün ortasını oka getir
+  var hedefAci=(270 - (hedefBolum*18+9)) % 360; if(hedefAci<0) hedefAci+=360;
+  var baslangic=aci*180/Math.PI % 360; if(baslangic<0) baslangic+=360;
+  var fark=(hedefAci-baslangic+360)%360;
+  var toplamDonus=720+fark; // 2 tam tur + hedef, hızlı - takılma yok
+  var sure=1100; var t0=performance.now();
+  function anim(t){
+    var p=Math.min(1,(t-t0)/sure);
+    var eased=1-Math.pow(1-p,2); // hızlı başlar, yumuşak durur ama yavaşlamaz
+    aci=(baslangic+toplamDonus*eased)*Math.PI/180; try{ciz();}catch(e){} window.addEventListener('load',function(){try{ciz();}catch(e){}});
+    if(p<1){requestAnimationFrame(anim);}else{
+      // ÖDÜL ANINDA EKLE
+      if(typeof db!=='undefined'&&db){db.ref('coin_users/'+aktif+'/bakiye').transaction(function(cur){return (cur||0)+hedefOdul;});}
+      var u2=oku();u2[aktif].bakiye=(u2[aktif].bakiye||0)+hedefOdul;localStorage.setItem('coin_users',JSON.stringify(u2));bakiyeGuncelle();
+      var net=hedefOdul-FIYAT;
+      if(net>=0){document.getElementById('sonuc').textContent='🎉 '+hedefOdul+' COIN kazandın! (Net: +'+net+')';document.getElementById('sonuc').style.color='#16a34a';}
+      else{document.getElementById('sonuc').textContent=hedefOdul+' COIN geldi, net: '+net+' COIN';document.getElementById('sonuc').style.color='#e11d48';}
+      donuyor=false;document.getElementById('cevirBtn').disabled=false;
+    }
+  }
+  requestAnimationFrame(anim);
+}
+</script></body></html>
