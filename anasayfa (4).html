@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>COIN ARENA - Ana Sayfa</title><style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;min-height:100vh;background:linear-gradient(160deg,#0f172a,#1e1b4b,#0f172a);color:white;padding:16px}
+.center{min-height:100vh;display:flex;align-items:center;justify-content:center}
+.card{background:#1e293b;width:100%;max-width:420px;padding:28px;border-radius:20px;text-align:center;border:1px solid #334155}
+.odul{background:#dc2626;color:white;font-size:22px;font-weight:900;padding:12px 8px;border-radius:12px;margin-bottom:18px}
+h1{margin:0 0 20px;font-size:34px;letter-spacing:2px;color:#facc15}
+input{width:100%;padding:13px;border-radius:12px;border:1px solid #475569;background:#0f172a;color:white;margin-bottom:12px;font-size:15px}
+button{width:100%;padding:13px;border:none;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;margin-bottom:10px}
+.kayit{background:#facc15;color:#111}.giris{background:#22c55e;color:white}
+#mesaj{min-height:22px;font-size:14px;color:#fda4af}
+header{display:flex;justify-content:space-between;align-items:center;max-width:800px;margin:0 auto 20px}
+.bakiye{background:#22c55e;color:white;padding:10px 16px;border-radius:20px;font-weight:bold}
+.wrap{max-width:800px;margin:0 auto;text-align:center}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.wheelbtn{background:#1e293b;border:2px solid #facc15;border-radius:18px;padding:20px 10px;cursor:pointer;text-decoration:none;color:white;display:block}
+.wheelbtn .emoji{font-size:44px}.wheelbtn .fiyat{font-size:22px;font-weight:900;color:#facc15;margin-top:8px}.wheelbtn small{color:#cbd5e1}
+.wheelpage{max-width:480px;margin:0 auto;text-align:center}
+.bigwheel{font-size:110px;margin:10px 0}
+.cev{background:#facc15;color:#111;font-size:20px;padding:16px}
+.geri{background:#334155;color:white}
+.odultablo{background:#0f172a;border:1px solid #334155;border-radius:12px;padding:12px;margin:12px 0}
+</style></head>
+<body><header><div style="font-size:22px;font-weight:900;color:#facc15">COIN ARENA</div><div class="bakiye" id="bakiye">Bakiye: 0 🪙</div></header>
+<div class="wrap"><h2>Hangi çarkta oynamak istiyorsun?</h2><div class="grid">
+<a class="wheelbtn" href="cark1.html"><div class="emoji">🎡</div><div class="fiyat">ÇARK 1</div><div style="font-weight:bold">10 COIN</div><small>Çevirme: 10 Coin<br>Kazanırsan +25</small></a>
+<a class="wheelbtn" href="cark2.html"><div class="emoji">🎡</div><div class="fiyat">ÇARK 2</div><div style="font-weight:bold">50 COIN</div><small>Çevirme: 50 Coin<br>Kazanırsan +130</small></a>
+<a class="wheelbtn" href="cark3.html"><div class="emoji">🎡</div><div class="fiyat">ÇARK 3</div><div style="font-weight:bold">100 COIN</div><small>Çevirme: 100 Coin<br>Kazanırsan +280</small></a>
+<a class="wheelbtn" href="cark4.html"><div class="emoji">🎡</div><div class="fiyat">ÇARK 4</div><div style="font-weight:bold">200 COIN</div><small>Çevirme: 200 Coin<br>Kazanırsan +600</small></a>
+<a class="wheelbtn" href="cark5.html"><div class="emoji">🎡</div><div class="fiyat">ÇARK 5</div><div style="font-weight:bold">500 COIN</div><small>Çevirme: 500 Coin<br>Kazanırsan +1600</small></a>
+<a class="wheelbtn" href="cark6.html"><div class="emoji">🎡</div><div class="fiyat">ÇARK 6</div><div style="font-weight:bold">1000 COIN</div><small>Çevirme: 1000 Coin<br>Kazanırsan +3500</small></a>
+</div><br><button onclick="location.href='index.html'" style="background:#334155;color:white;max-width:300px">Çıkış Yap</button></div>
+<script>
+function oku(){try{return JSON.parse(localStorage.getItem('coin_users')||'{}')}catch(e){return {}}}
+var aktif=localStorage.getItem('coin_aktif');var u=oku();var b=u[aktif]?u[aktif].bakiye:0;document.getElementById('bakiye').textContent='Bakiye: '+b+' 🪙';
+</script></body></html>
