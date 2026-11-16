@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Profil</title><style>
+*{box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#ffe4f1,#fff7d6,#d9f9ff,#ffe4f1);padding:16px}.wrap{max-width:480px;margin:0 auto;text-align:center}.card{background:white;border-radius:28px;padding:24px;border:3px solid #ffb3d1;margin-top:14px}.avatar{width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:62px;margin:0 auto;border:4px solid white;box-shadow:0 10px 20px rgba(255,100,170,.3)}.kadi{font-size:24px;font-weight:900;color:#7a2e5a;margin-top:10px}.adsoyad{color:#9a5a7a;font-size:15px;margin-top:4px}.bakiye{font-size:20px;font-weight:900;color:#ff2e63;margin:12px 0}.seviyebox{background:#fff5f9;border:2px solid #ffd1e3;border-radius:18px;padding:14px;margin:14px 0;text-align:left}.seviyebox h3{margin:0 0 8px;color:#7a2e5a}.seviyebar{height:14px;background:#ffe4f1;border-radius:999px;overflow:hidden}.seviyebar div{height:100%;background:linear-gradient(90deg,#ff6b9d,#ffd166);width:0%}.btn{display:block;background:#ffd166;color:#7a2e00;padding:13px;border-radius:14px;text-decoration:none;font-weight:900;margin:10px 0;border:none;width:100%;cursor:pointer;font-size:16px}.btn2{background:#7ee8a2;color:#064e2b}.btn3{background:#e9d5ff;color:#5b21b6}.btn4{background:#ffe4f1;color:#7a2e5a}.gecmis{margin-top:14px;text-align:left;display:none}.islem{background:#fff5f9;border:2px solid #ffd1e3;border-radius:14px;padding:10px;margin:8px 0;font-size:14px}.islem b{color:#7a2e5a}input{width:100%;padding:12px;border-radius:12px;border:2px solid #ffd1e3;margin-top:8px}.geri{display:inline-block;margin-top:12px;background:white;padding:12px 20px;border-radius:999px;text-decoration:none;color:#7a2e5a;font-weight:800;border:2px solid #ffd1e3}
+</style><script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script><script>const firebaseConfig={apiKey:"AIzaSyD8WfOZ-JmuVZkisaK7rcpLqvYGyhPSN9o",authDomain:"coin-arena-3f0f9.firebaseapp.com",databaseURL:"https://coin-arena-3f0f9-default-rtdb.europe-west1.firebasedatabase.app",projectId:"coin-arena-3f0f9",storageBucket:"coin-arena-3f0f9.firebasestorage.app",messagingSenderId:"541797577041",appId:"1:541797577041:web:9378f7ccbda8857946a370"}; if(typeof firebase!=='undefined' && !firebase.apps.length){firebase.initializeApp(firebaseConfig);} const db=(typeof firebase!=='undefined')?firebase.database():null;</script></head><body><div id="seviyePopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99999;align-items:center;justify-content:center;padding:20px"><div style="background:white;border-radius:28px;padding:28px 22px;max-width:360px;width:100%;text-align:center;border:3px solid #ffb3d1"><div style="font-size:50px">🎉</div><div style="font-size:22px;font-weight:900;color:#7a2e5a;margin:10px 0">Tebrikler seviye geçtiniz!</div><div id="seviyePopupYazi" style="font-size:16px;color:#9a5a7a;margin-bottom:6px"></div><div id="seviyePopupOdul" style="font-size:20px;font-weight:900;color:#16a34a;margin-bottom:14px"></div><button onclick="document.getElementById('seviyePopup').style.display='none'" style="width:100%;background:#ff2e63;color:white;border:none;padding:14px;border-radius:14px;font-size:16px;font-weight:900;cursor:pointer">Tamam</button></div></div><div id="bakimOverlay" style="display:none;position:fixed;inset:0;background:#000;z-index:99999;align-items:center;justify-content:center;text-align:center;color:white;font-size:26px;font-weight:900;padding:20px;flex-direction:column;gap:12px;touch-action:none"><div style="font-size:60px">🔧</div><div>SİTE ŞU ANDA BAKIMDA</div><div style="font-size:15px;font-weight:400;color:#cbd5e1">Lütfen daha sonra tekrar dene kanka</div></div><div class="wrap"><div class="card">
+<div class="avatar" id="avatar">🍬</div>
+<div class="kadi" id="kadi">Kullanıcı</div>
+<div class="adsoyad" id="adsoyad">İsim Soyisim</div>
+<div class="bakiye">🪙 <span id="bakiye">100</span> COIN</div>
+<input id="adsoyadInput" placeholder="İsim Soyisimini yaz (bir kez)">
+<button class="btn btn4" onclick="adsoyadKaydet()">İsim Soyisimi Kaydet</button>
+<div class="seviyebox"><h3>⭐ Seviye <span id="seviye">1</span></h3><p style="font-size:14px;color:#7a2e5a;margin:6px 0;font-weight:700" id="seviyeAltYazi">Şu an Seviye 1, sonraki Seviye 2 için 100 COIN harcama gerekli</p><div class="seviyebar"><div id="bar"></div></div><p style="font-size:13px;color:#9a5a7a;margin:8px 0 0">Toplam Harcaman: <b id="harcama" style="color:#ff2e63">0 COIN</b></p><p style="font-size:13px;color:#16a34a;margin:4px 0 0;font-weight:700" id="odulYazi">Seviye 1 Ödülü: 50 COIN</p></div>
+<button class="btn btn3" onclick="gecmisAc()">📜 Geçmiş İşlemler</button>
+<div class="gecmis" id="gecmis"><h3 style="color:#7a2e5a;margin:0 0 8px">Coin Yükleme & Çekme</h3><div id="islemListe"></div></div>
+<a class="btn btn2" href="bakiye.html" style="text-decoration:none">Bakiye Yükle / Çek</a><a class="btn btn4" href="anasayfa.html" style="text-decoration:none">Çarklara Dön</a><button class="btn" onclick="cikis()" style="background:#fee2e2;color:#991b1b">Çıkış Yap</button>
+</div><a class="geri" href="anasayfa.html">← Ana Sayfaya Dön</a></div>
+<script>
+var avatarlar=[{e:'🍬',c:'#ffe4f1'},{e:'🍭',c:'#d9f9ff'},{e:'🍩',c:'#fff7d6'},{e:'🍓',c:'#ffe4e6'},{e:'🍒',c:'#fce7f3'},{e:'🍦',c:'#e0f2fe'},{e:'🧁',c:'#fef3c7'},{e:'🍪',c:'#ffedd5'},{e:'🍰',c:'#ede9fe'},{e:'🍫',c:'#fef9c3'},{e:'🍋',c:'#fefce8'},{e:'🍇',c:'#f3e8ff'}];
+var ad=localStorage.getItem('coin_aktif')||'Kullanıcı';
+var u={};try{u=JSON.parse(localStorage.getItem('coin_users')||'{}')}catch(e){}
+if(!u[ad]){u[ad]={sifre:'',bakiye:100,seviye:1,adsoyad:''};}
+document.getElementById('kadi').textContent=ad;
+var toplam=0;for(var i=0;i<ad.length;i++){toplam+=ad.charCodeAt(i);}var sec=avatarlar[toplam%avatarlar.length];
+document.getElementById('avatar').textContent=sec.e;document.getElementById('avatar').style.background=sec.c;
+
+function odulHesapla(yeniSeviye){if(yeniSeviye<=10) return 20;if(yeniSeviye<=20) return 50;if(yeniSeviye<=30) return 100;if(yeniSeviye<=40) return 150;if(yeniSeviye<=50) return 200;if(yeniSeviye<=60) return 250;if(yeniSeviye<=70) return 300;if(yeniSeviye<=80) return 350;if(yeniSeviye<=90) return 500;return 1000;}
+function goster(){
+var bakiye=(typeof window.FB_BAKIYE!=='undefined'?window.FB_BAKIYE:(u[ad].bakiye||0));document.getElementById('bakiye').textContent=bakiye;u[ad].bakiye=bakiye;
+var seviye=u[ad].seviye||1;if(!u[ad].harcama) u[ad].harcama=0;if(!u[ad].harcamaSeviyeIcin) u[ad].harcamaSeviyeIcin=0;
+// Otomatik seviye atlama - harcadıkça yükselir, her seviye öncekinin 2 katı
+var degisti=false;var toplamOdul=0;var yeniSeviye=seviye;
+while(true){var gerekli=50*Math.pow(2,seviye-1);if(u[ad].harcamaSeviyeIcin>=gerekli){u[ad].harcamaSeviyeIcin-=gerekli;seviye++;u[ad].seviye=seviye;var odul=odulHesapla(seviye);u[ad].bakiye=(u[ad].bakiye||0)+odul;degisti=true;toplamOdul+=odul;yeniSeviye=seviye;}else{break;}}
+if(degisti){/* seviye ödülü artık sadece Firebase'den, telefona yazıp adminin düşürdüğünü geri alma */ document.getElementById('bakiye').textContent=bakiye;}
+document.getElementById('seviye').textContent=seviye;if(degisti){try{document.getElementById('seviyePopupYazi').textContent='Yeni Seviyen: '+yeniSeviye;document.getElementById('seviyePopupOdul').textContent='Ödülün: '+toplamOdul+' COIN';document.getElementById('seviyePopup').style.display='flex';}catch(e){}}
+var gerekliSimdi=50*Math.pow(2,seviye-1);
+document.getElementById('seviyeAltYazi').textContent='Şu an Seviye '+seviye+', sonraki Seviye '+(seviye+1)+' için '+gerekliSimdi+' COIN harcama gerekli';
+document.getElementById('harcama').textContent=(u[ad].harcama||0)+' COIN';
+document.getElementById('odulYazi').textContent='Seviye '+(seviye+1)+' Ödülü: '+odulHesapla(seviye+1)+' COIN - Seviye atlayınca bakiyene eklenir';
+var ilerleme=Math.min(100,Math.floor((u[ad].harcamaSeviyeIcin||0)/gerekliSimdi*100));
+document.getElementById('bar').style.width=ilerleme+'%';
+if(u[ad].adsoyad){document.getElementById('adsoyad').textContent=u[ad].adsoyad;}
+}
+function adsoyadKaydet(){var v=document.getElementById('adsoyadInput').value.trim();if(!v){alert('İsim soyisim yaz kanka');return;}u[ad].adsoyad=v;localStorage.setItem('coin_users',JSON.stringify(u));goster();
+
+document.getElementById('adsoyadInput').value='';}
+
+function gecmisAc(){var g=document.getElementById('gecmis');g.style.display=g.style.display==='block'?'none':'block';if(g.style.display!=='block')return;var liste=document.getElementById('islemListe');var talepler=[];try{talepler=JSON.parse(localStorage.getItem('coin_talepler')||'[]')}catch(e){}var benim=talepler.filter(function(t){return t.kadi===ad;});if(benim.length===0){liste.innerHTML='<div class="islem">Henüz işlem yok kanka. Bakiye sayfasından yükle / çek yapınca buraya düşecek.</div>';return;}liste.innerHTML=benim.slice().reverse().map(function(t){return '<div class="islem"><b>'+(t.tip==='yukle'?'⬆️ Coin Yükleme':'⬇️ Coin Çekme')+'</b> - '+t.tutar+' COIN<br><span style="color:#9a5a7a">'+(t.tarih||'')+'</span></div>';}).join('');}
+function cikis(){localStorage.removeItem('coin_aktif');location.href='index.html';}
+goster();
+
+function bakiyeCanli(){ var kadi=localStorage.getItem('coin_aktif'); if(!kadi) return; if(typeof db!=='undefined' && db){ db.ref('coin_users/'+kadi).on('value', function(s){ var v=s.val(); if(!v) return; window.FB_BAKIYE=v.bakiye||0;var el=document.getElementById('bakiye'); if(el) el.textContent=v.bakiye||0; try{ var u=JSON.parse(localStorage.getItem('coin_users')||'{}'); if(u[kadi]){u[kadi].bakiye=v.bakiye||0; if(v.seviye) u[kadi].seviye=v.seviye; if(v.harcama!==undefined) u[kadi].harcama=v.harcama; if(v.harcamaSeviyeIcin!==undefined) u[kadi].harcamaSeviyeIcin=v.harcamaSeviyeIcin; localStorage.setItem('coin_users',JSON.stringify(u)); try{u=JSON.parse(localStorage.getItem('coin_users')||'{}');}catch(e){} if(typeof goster==='function'){ try{goster();
+
+}catch(e){} } } }catch(e){} }); } } setTimeout(bakiyeCanli, 300);setInterval(function(){try{if(typeof bakiyeCanli==='function'){bakiyeCanli();}}catch(e){}}, 3000);
+
+function bakimKontrol(){
+  // localStorage'da bakım 1 kalmışsa açılışta hemen göster
+  try{if(localStorage.getItem('coin_bakim')==='1'){var o0=document.getElementById('bakimOverlay'); if(o0){o0.style.display='flex'; document.body.style.overflow='hidden';}}}catch(e){}
+  if(typeof db==='undefined'||!db) return;
+  db.ref('coin_bakim').on('value', function(s){
+    var v=s.val(); var ov=document.getElementById('bakimOverlay'); if(!ov) return;
+    if(v==='1'||v===1||v===true){ov.style.display='flex'; localStorage.setItem('coin_bakim','1'); document.body.style.overflow='hidden';}
+    else{ov.style.display='none'; localStorage.setItem('coin_bakim','0'); document.body.style.overflow='';}
+  });
+}
+setTimeout(bakimKontrol, 100);
+</script></body></html>
