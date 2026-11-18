@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Çürük Şeker - COIN ARENA</title><style>
+*{box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{margin:0;min-height:100vh;background:linear-gradient(180deg,#ffe4f1,#fff7d6,#d9f9ff,#ffe4f1);padding:16px}
+header{max-width:520px;margin:0 auto 12px;display:flex;justify-content:space-between;align-items:center}
+header button{background:white;border:3px solid #ffb3d1;border-radius:999px;padding:10px 14px;font-weight:900;color:#7a2e5a;cursor:pointer}
+.bakiye{background:#7ee8a2;color:#064e2b;padding:10px 16px;border-radius:999px;font-weight:900;border:3px solid white}
+.wrap{max-width:520px;margin:0 auto;background:white;border-radius:28px;padding:18px;border:3px solid #ffb3d1;box-shadow:0 12px 30px rgba(255,120,180,.25);text-align:center}
+h2{color:#7a2e5a;margin:4px 0 2px}
+.alt{color:#9a5a7a;font-size:13px;margin-bottom:12px}
+.odulTablosu{background:#fff0a8;border:2px dashed #ffb703;border-radius:16px;padding:12px;margin-bottom:14px}
+.odulSatir{display:flex;justify-content:space-between;max-width:320px;margin:6px auto 0;font-size:14px;font-weight:800;color:#7a2e5a}
+.ayar{background:#fff5f9;border:2px solid #ffd1e3;border-radius:16px;padding:12px;text-align:left;margin-bottom:12px}
+.ayar label{display:block;font-weight:900;color:#7a2e5a;font-size:14px;margin:4px 0 4px}
+.ayar input{width:100%;padding:12px;border:2px solid #ffd1e3;border-radius:12px;font-size:16px;font-weight:800;outline:none}
+.basla{width:100%;background:#ff2e63;color:white;border:none;padding:15px;border-radius:16px;font-weight:900;font-size:18px;cursor:pointer;margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.kutu{aspect-ratio:1;border:2px solid #ffd1e3;border-radius:14px;background:#ffe4f1;font-size:34px;font-weight:900;cursor:pointer;color:#7a2e5a}
+.kutu:disabled{cursor:default}
+.kutu.guvenli{background:#dcfce7;border-color:#86efac}
+.kutu.curuk{background:#fecaca;border-color:#ef4444}
+.kutu.goster{background:#fff7ed}
+.bilgi{background:#fff0a8;border:2px dashed #ffb703;border-radius:14px;padding:10px;color:#7a2e5a;font-weight:800;margin:10px 0}
+.al{width:100%;background:#22c55e;color:white;border:none;padding:15px;border-radius:16px;font-weight:900;font-size:18px;cursor:pointer;display:none;margin-top:8px}
+.yeniden{width:100%;background:#ff2e63;color:white;border:none;padding:15px;border-radius:16px;font-weight:900;font-size:18px;cursor:pointer;display:none;margin-top:8px}
+.sonuc{font-weight:900;margin:8px 0;min-height:22px;color:#7a2e5a}
+.geri{margin-top:14px;display:inline-block;background:white;padding:12px 20px;border-radius:999px;text-decoration:none;color:#7a2e5a;font-weight:800;border:2px solid #ffd1e3}
+</style><script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script><script>const firebaseConfig={apiKey:"AIzaSyD8WfOZ-JmuVZkisaK7rcpLqvYGyhPSN9o",authDomain:"coin-arena-3f0f9.firebaseapp.com",databaseURL:"https://coin-arena-3f0f9-default-rtdb.europe-west1.firebasedatabase.app",projectId:"coin-arena-3f0f9",storageBucket:"coin-arena-3f0f9.firebasestorage.app",messagingSenderId:"541797577041",appId:"1:541797577041:web:9378f7ccbda8857946a370"};if(typeof firebase!=='undefined'&&!firebase.apps.length){firebase.initializeApp(firebaseConfig);}const db=(typeof firebase!=='undefined')?firebase.database():null;</script></head><body>
+<div id="bakimOverlay" style="display:none;position:fixed;inset:0;background:#000;z-index:99999;align-items:center;justify-content:center;text-align:center;color:white;font-size:26px;font-weight:900;padding:20px;flex-direction:column;gap:12px"><div style="font-size:60px">🔧</div><div>SİTE ŞU ANDA BAKIMDA</div><div style="font-size:15px;font-weight:400;color:#cbd5e1">Lütfen daha sonra tekrar dene kanka</div></div>
+<header><button onclick="location.href='anasayfa.html'">← Oyunlara Dön</button><div class="bakiye">🪙 <span id="bakiye">...</span> COIN</div></header>
+<div class="wrap"><h2>💥 Çürük Şeker</h2><div class="alt">9 şekerden sağlamları bul, çürüğe basarsan patlarsın!</div>
+<div class="ayar" id="ayarKutu"><label>Kaç COIN ile oynayacaksın? (10 - 1000)</label><input id="bahis" type="number" min="10" max="1000" placeholder="Örn: 100"><button class="basla" onclick="oyunuBaslat()">OYUNA BAŞLA 🍬</button></div>
+<div id="oyunAlani" style="display:none">
+<div class="bilgi">💰 Yatırdın: <span id="yatirilan">0</span> COIN &nbsp;|&nbsp; 🏆 Alacağın: <span id="alacagin">0</span> COIN &nbsp;|&nbsp; ✖️ Çarpan: <span id="carpan">1.00</span>x</div>
+<div class="grid" id="grid"></div>
+<div class="sonuc" id="sonuc"></div>
+<button class="al" id="alBtn" onclick="parayiAl()">💰 Parayı Al</button>
+<button class="yeniden" id="yenidenBtn" onclick="yenidenOyna()">🔄 Yeniden Oyna</button></div>
+<div class="odulTablosu"><div style="font-weight:900;color:#7a2e5a">🍬 Ödüller - 3 Çürük Şeker Var</div>
+<div class="odulSatir"><span>1. sağlam şeker</span><b>1.5x</b></div>
+<div class="odulSatir"><span>2. sağlam şeker</span><b>2x</b></div>
+<div class="odulSatir"><span>3. sağlam şeker</span><b>5x</b></div>
+<div class="odulSatir"><span>4. sağlam şeker</span><b>10x</b></div>
+<div class="odulSatir"><span>5. sağlam şeker</span><b>20x</b></div>
+<div class="odulSatir"><span>6. sağlam şeker</span><b>50x</b></div></div>
+<a class="geri" href="anasayfa.html">← Oyunlara Dön</a></div>
+<script>
+// ============ BAKİYE - ŞEKER SLOT İLE AYNI, ADAM AKILLI ============
+var SON_BAKIYE=null;
+function bakiyeGoster(v){SON_BAKIYE=v;var el=document.getElementById('bakiye');if(el)el.textContent=v;}
+function bakiyeYereldenOku(){var kadi=localStorage.getItem('coin_aktif');if(!kadi)return null;try{var u=JSON.parse(localStorage.getItem('coin_users')||'{}');if(u[kadi]&&u[kadi].bakiye!==undefined&&u[kadi].bakiye!==null)return Number(u[kadi].bakiye);}catch(e){}return null;}
+function bakiyeYereleYaz(v){var kadi=localStorage.getItem('coin_aktif');if(!kadi)return;try{var u=JSON.parse(localStorage.getItem('coin_users')||'{}');if(!u[kadi])u[kadi]={};u[kadi].bakiye=v;localStorage.setItem('coin_users',JSON.stringify(u));}catch(e){}}
+function bakiyeFirebaseYaz(v){var kadi=localStorage.getItem('coin_aktif');if(!kadi||!db)return;db.ref('coin_users/'+kadi).update({bakiye:v});}
+function bakiyeDinle(){
+  var kadi=localStorage.getItem('coin_aktif');
+  var yerel=bakiyeYereldenOku();if(yerel!==null)bakiyeGoster(yerel);
+  if(!kadi||!db)return;
+  db.ref('coin_users/'+kadi).on('value',function(s){var v=s.val();if(v&&v.bakiye!==undefined&&v.bakiye!==null){var fb=Number(v.bakiye);bakiyeGoster(fb);bakiyeYereleYaz(fb);}});
+  db.ref('coin_users/'+kadi).once('value').then(function(s){var v=s.val();if(v&&v.bakiye!==undefined&&v.bakiye!==null){var fb=Number(v.bakiye);bakiyeGoster(fb);bakiyeYereleYaz(fb);}}).catch(function(){});
+}
+bakiyeDinle();
+function bakimKontrol(){if(typeof db==='undefined'||!db)return;db.ref('coin_bakim').on('value',function(s){var v=s.val();var ov=document.getElementById('bakimOverlay');if(v==='1'||v===true){ov.style.display='flex';document.body.style.overflow='hidden';}else{ov.style.display='none';document.body.style.overflow='';}});}
+bakimKontrol();
+// ============ OYUN - SABİT 3 ÇÜRÜK ============
+var CARPANLAR=[0,1.5,2,5,10,20,50]; // index = açılan sağlam sayısı
+var bahis=0, acilan=0, oyunBitti=false, curukler=[];
+function carpHesapla(){if(acilan===0)return 1;return CARPANLAR[acilan]||50;}
+function guncelleBilgi(){var c=carpHesapla();var al=Math.floor(bahis*c);document.getElementById('carpan').textContent=c.toFixed(2);document.getElementById('alacagin').textContent=al;}
+function oyunuBaslat(){
+  var b=Number(document.getElementById('bahis').value);
+  if(!b||b<10||b>1000){document.getElementById('sonuc').textContent='Bahis 10 ile 1000 arası olmalı kanka!';return;}
+  if(SON_BAKIYE===null){var y=bakiyeYereldenOku();if(y!==null){bakiyeGoster(y);}else{document.getElementById('sonuc').textContent='Bakiye yükleniyor kanka, 1 saniye bekleyip tekrar dene!';return;}}
+  if(SON_BAKIYE<b){document.getElementById('sonuc').textContent='Bakiyen yetersiz! Bakiyen: '+SON_BAKIYE+' COIN';return;}
+  bahis=b;acilan=0;oyunBitti=false;curukler=[];
+  var yeniBakiye=SON_BAKIYE-b;bakiyeGoster(yeniBakiye);bakiyeYereleYaz(yeniBakiye);bakiyeFirebaseYaz(yeniBakiye);
+  var kadi=localStorage.getItem('coin_aktif');
+  if(db&&kadi){db.ref('coin_users/'+kadi+'/harcama').transaction(function(cur){return (cur||0)+b;});db.ref('coin_users/'+kadi+'/harcamaSeviyeIcin').transaction(function(cur){return (cur||0)+b;});}
+  var idx=[];for(var i=0;i<9;i++)idx.push(i);
+  for(var j=0;j<3;j++){var r=Math.floor(Math.random()*idx.length);curukler.push(idx.splice(r,1)[0]);}
+  document.getElementById('ayarKutu').style.display='none';document.getElementById('oyunAlani').style.display='block';
+  document.getElementById('yatirilan').textContent=bahis;document.getElementById('alacagin').textContent=bahis;document.getElementById('carpan').textContent='1.00';
+  document.getElementById('alBtn').style.display='none';document.getElementById('yenidenBtn').style.display='none';
+  document.getElementById('sonuc').textContent='Şeker seç kanka, çürüğe basma!';document.getElementById('sonuc').style.color='#7a2e5a';
+  var g=document.getElementById('grid');g.innerHTML='';
+  for(var k=0;k<9;k++){var btn=document.createElement('button');btn.className='kutu';btn.textContent='🍬';btn.dataset.i=k;btn.onclick=(function(ii,bb){return function(){kutuTikla(ii,bb);};})(k,btn);g.appendChild(btn);}
+}
+function kutuTikla(i,btn){if(oyunBitti)return;if(btn.disabled)return;btn.disabled=true;
+  if(curukler.indexOf(i)!==-1){
+    btn.className='kutu curuk';btn.textContent='🤢';oyunBitti=true;
+    document.querySelectorAll('.kutu').forEach(function(k){var ii=Number(k.dataset.i);if(curukler.indexOf(ii)!==-1&&ii!==i){k.textContent='🤢';k.className='kutu curuk goster';}k.disabled=true;});
+    document.getElementById('sonuc').textContent='💥 Çürük şekere bastın! '+bahis+' COIN gitti kanka!';document.getElementById('sonuc').style.color='#e11d48';
+    document.getElementById('alBtn').style.display='none';document.getElementById('yenidenBtn').style.display='block';return;
+  }
+  btn.className='kutu guvenli';btn.textContent='🍭';acilan++;guncelleBilgi();
+  document.getElementById('alBtn').style.display='block';
+  document.getElementById('sonuc').textContent='🍭 Sağlam! Devam et ya da Parayı Al!';document.getElementById('sonuc').style.color='#16a34a';
+  if(acilan===6){document.getElementById('sonuc').textContent='🎉 Hepsini buldun! 50x kazandın, paranı al kanka!';}
+}
+function parayiAl(){if(oyunBitti)return;if(acilan<1){document.getElementById('sonuc').textContent='Önce en az 1 şeker açman lazım kanka!';return;}oyunBitti=true;var kazanc=Math.floor(bahis*carpHesapla());
+  var sonBakiye=SON_BAKIYE+kazanc;bakiyeGoster(sonBakiye);bakiyeYereleYaz(sonBakiye);bakiyeFirebaseYaz(sonBakiye);
+  document.querySelectorAll('.kutu').forEach(function(k){k.disabled=true;});
+  document.getElementById('sonuc').textContent='🎉 Kazandın! '+kazanc+' COIN aldın! (Kâr: +'+(kazanc-bahis)+')';document.getElementById('sonuc').style.color='#16a34a';
+  document.getElementById('alBtn').style.display='none';document.getElementById('yenidenBtn').style.display='block';
+}
+function yenidenOyna(){document.getElementById('oyunAlani').style.display='none';document.getElementById('ayarKutu').style.display='block';document.getElementById('sonuc').textContent='';document.getElementById('alBtn').style.display='none';document.getElementById('yenidenBtn').style.display='none';}
+</script></body></html>
