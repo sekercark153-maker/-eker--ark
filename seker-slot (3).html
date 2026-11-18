@@ -1,0 +1,141 @@
+<!DOCTYPE html><html lang="tr"><head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Şeker Slot - COIN ARENA</title><style>
+*{box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{margin:0;min-height:100vh;background:linear-gradient(180deg,#ffe4f1,#fff7d6,#d9f9ff,#ffe4f1);padding:16px}
+header{max-width:520px;margin:0 auto 12px;display:flex;justify-content:space-between;align-items:center}
+header button{background:white;border:3px solid #ffb3d1;border-radius:999px;padding:10px 14px;font-weight:900;color:#7a2e5a;cursor:pointer}
+.bakiye{background:#7ee8a2;color:#064e2b;padding:10px 16px;border-radius:999px;font-weight:900;border:3px solid white}
+.wrap{max-width:520px;margin:0 auto;background:white;border-radius:28px;padding:18px;border:3px solid #ffb3d1;box-shadow:0 12px 30px rgba(255,120,180,.25);text-align:center}
+h2{color:#7a2e5a;margin:4px 0 2px}
+.alt{color:#9a5a7a;font-size:13px;margin-bottom:12px}
+/* Üst tabela - 3 elmas 20x */
+.odulTablosu{background:#fff0a8;border:2px dashed #ffb703;border-radius:16px;padding:12px;margin-bottom:14px}
+.odulTablosu .jackpot{font-size:28px;font-weight:900;color:#7a2e5a}
+.odulTablosu .jackpot span{font-size:32px}
+.odulSatir{display:flex;justify-content:space-between;max-width:300px;margin:6px auto 0;font-size:14px;font-weight:800;color:#7a2e5a}
+.ayar{background:#fff5f9;border:2px solid #ffd1e3;border-radius:16px;padding:12px;text-align:left;margin-bottom:12px}
+.ayar label{display:block;font-weight:900;color:#7a2e5a;font-size:14px;margin:4px 0 4px}
+.ayar input{width:100%;padding:12px;border:2px solid #ffd1e3;border-radius:12px;font-size:16px;font-weight:800;outline:none}
+.slotMakine{background:linear-gradient(180deg,#ff2e63,#ff7aa2);border-radius:22px;padding:16px;border:4px solid white;box-shadow:0 10px 24px rgba(255,46,99,.35)}
+.makaraKutu{display:flex;gap:10px;justify-content:center}
+.makara{flex:1;background:white;border-radius:16px;height:110px;display:flex;align-items:center;justify-content:center;font-size:58px;border:3px solid #ffd1e3;transition:transform .1s}
+.makara.donuyor{animation:asagi .14s infinite}
+@keyframes asagi{0%{transform:translateY(-10px);opacity:.6}50%{transform:translateY(6px);opacity:1}100%{transform:translateY(10px);opacity:.6}}
+.cevir{width:100%;background:#ff2e63;color:white;border:none;padding:15px;border-radius:16px;font-weight:900;font-size:18px;cursor:pointer;margin-top:12px}
+.cevir:disabled{background:#fda4af;cursor:not-allowed}
+.bilgi{background:#fff0a8;border:2px dashed #ffb703;border-radius:14px;padding:10px;color:#7a2e5a;font-weight:800;margin:10px 0}
+.sonuc{font-weight:900;margin:8px 0;min-height:22px;color:#7a2e5a}
+.geri{margin-top:14px;display:inline-block;background:white;padding:12px 20px;border-radius:999px;text-decoration:none;color:#7a2e5a;font-weight:800;border:2px solid #ffd1e3}
+</style><script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script><script>const firebaseConfig={apiKey:"AIzaSyD8WfOZ-JmuVZkisaK7rcpLqvYGyhPSN9o",authDomain:"coin-arena-3f0f9.firebaseapp.com",databaseURL:"https://coin-arena-3f0f9-default-rtdb.europe-west1.firebasedatabase.app",projectId:"coin-arena-3f0f9",storageBucket:"coin-arena-3f0f9.firebasestorage.app",messagingSenderId:"541797577041",appId:"1:541797577041:web:9378f7ccbda8857946a370"};if(typeof firebase!=='undefined'&&!firebase.apps.length){firebase.initializeApp(firebaseConfig);}const db=(typeof firebase!=='undefined')?firebase.database():null;</script></head><body>
+<div id="bakimOverlay" style="display:none;position:fixed;inset:0;background:#000;z-index:99999;align-items:center;justify-content:center;text-align:center;color:white;font-size:26px;font-weight:900;padding:20px;flex-direction:column;gap:12px"><div style="font-size:60px">🔧</div><div>SİTE ŞU ANDA BAKIMDA</div><div style="font-size:15px;font-weight:400;color:#cbd5e1">Lütfen daha sonra tekrar dene kanka</div></div>
+<header><button onclick="location.href='anasayfa.html'">← Oyunlara Dön</button><div class="bakiye">🪙 <span id="bakiye">100</span> COIN</div></header>
+<div class="wrap"><h2>🍬 Şeker Slot</h2><div class="alt">Çevir, aynı şekerler yan yana gelsin, kazan!</div>
+<div class="slotMakine"><div class="makaraKutu"><div class="makara" id="m0">🍬</div><div class="makara" id="m1">🍭</div><div class="makara" id="m2">🍫</div></div>
+<button class="cevir" id="cevirBtn" onclick="cevir()">🎰 ÇEVİR</button></div>
+<div class="ayar"><label>Kaç COIN ile çevireceksin? (10 - 1000)</label><input id="bahis" type="number" min="10" max="1000" placeholder="Örn: 100"></div>
+<div class="bilgi">💰 Yatırdın: <span id="yatirilan">0</span> COIN &nbsp;|&nbsp; 🏆 Kazandın: <span id="kazandin">0</span> COIN</div>
+<div class="sonuc" id="sonuc">Bahsini yaz, çevir kanka!</div>
+<div class="odulTablosu"><div class="jackpot"><span>💎</span><span>💎</span><span>💎</span> = 20x</div>
+<div class="odulSatir"><span>🍫🍫🍫 Büyük Şeker</span><b>10x</b></div>
+<div class="odulSatir"><span>🍭🍭🍭 Orta Şeker</span><b>5x</b></div>
+<div class="odulSatir"><span>🍬🍬🍬 Küçük Şeker</span><b>2x</b></div>
+<div class="odulSatir"><span>2 tanesi aynı</span><b>1.2x</b></div>
+<div class="odulSatir"><span>Hiçbiri aynı değil</span><b>Kaybettin</b></div></div>
+<a class="geri" href="anasayfa.html">← Oyunlara Dön</a></div>
+<script>
+var SON_BAKIYE=null;
+function bakiyeDinle(){
+  var kadi=localStorage.getItem('coin_aktif');
+  // Önce anasayfadaki gibi localStorage coin_users'tan hemen göster, 0 görünmesin
+  try{var u=JSON.parse(localStorage.getItem('coin_users')||'{}');if(kadi&&u[kadi]&&u[kadi].bakiye!==undefined){SON_BAKIYE=u[kadi].bakiye;document.getElementById('bakiye').textContent=SON_BAKIYE;}}catch(e){}
+  if(!kadi)return;
+  if(typeof db!=='undefined'&&db){db.ref('coin_users/'+kadi).on('value',function(s){var v=s.val();if(v&&v.bakiye!==undefined){SON_BAKIYE=v.bakiye;document.getElementById('bakiye').textContent=v.bakiye;try{var uu=JSON.parse(localStorage.getItem('coin_users')||'{}');if(!uu[kadi])uu[kadi]={};uu[kadi].bakiye=v.bakiye;localStorage.setItem('coin_users',JSON.stringify(uu));}catch(e){}}});}
+}
+bakiyeDinle();
+function bakimKontrol(){if(typeof db==='undefined'||!db)return;db.ref('coin_bakim').on('value',function(s){var v=s.val();var ov=document.getElementById('bakimOverlay');if(v==='1'||v===true){ov.style.display='flex';document.body.style.overflow='hidden';}else{ov.style.display='none';document.body.style.overflow='';}});}
+bakimKontrol();
+var semboller=['🍬','🍭','🍫','💎'];
+var donuyor=false;
+function rastgeleSembol(){return semboller[Math.floor(Math.random()*semboller.length)];}
+function cevir(){
+  if(donuyor)return;
+  var b=Number(document.getElementById('bahis').value);
+  if(!b||b<10||b>1000){document.getElementById('sonuc').textContent='Bahis 10 ile 1000 arası olmalı kanka!';document.getElementById('sonuc').style.color='#e11d48';return;}
+  var bak=SON_BAKIYE!==null?SON_BAKIYE:0;if(bak<b){document.getElementById('sonuc').textContent='Bakiyen yetersiz!';document.getElementById('sonuc').style.color='#e11d48';return;}
+  donuyor=true;document.getElementById('cevirBtn').disabled=true;document.getElementById('cevirBtn').textContent='Çevriliyor...';
+  document.getElementById('yatirilan').textContent=b;document.getElementById('kazandin').textContent='0';
+  document.getElementById('sonuc').textContent='Çevriliyor...';document.getElementById('sonuc').style.color='#7a2e5a';
+  SON_BAKIYE=bak-b;document.getElementById('bakiye').textContent=SON_BAKIYE;try{var _u=JSON.parse(localStorage.getItem('coin_users')||'{}');var _k=localStorage.getItem('coin_aktif');if(_k){if(!_u[_k])_u[_k]={};_u[_k].bakiye=SON_BAKIYE;localStorage.setItem('coin_users',JSON.stringify(_u));}}catch(e){}
+  var kadi=localStorage.getItem('coin_aktif');
+  if(typeof db!=='undefined'&&db){db.ref('coin_users/'+kadi+'/bakiye').transaction(function(cur){return Math.max(0,(cur||0)-b);});db.ref('coin_users/'+kadi+'/harcama').transaction(function(cur){return (cur||0)+b;});db.ref('coin_users/'+kadi+'/harcamaSeviyeIcin').transaction(function(cur){return (cur||0)+b;});}
+  // Oranlar: Boş %71, 2 aynı %20, Küçük %3, Orta %3, Büyük %2, Elmas %1 = %100
+  var r=Math.random()*100;var tur='';
+  if(r<71)tur='bos';else if(r<91)tur='iki';else if(r<94)tur='kucuk';else if(r<97)tur='orta';else if(r<99)tur='buyuk';else tur='elmas';
+  var sonucSemboller=[];
+  if(tur==='bos'){sonucSemboller=['🍬','🍭','🍫'];}
+  else if(tur==='iki'){var s=semboller[Math.floor(Math.random()*3)];var diger='🍬';while(diger===s){diger=semboller[Math.floor(Math.random()*3)];}sonucSemboller=[s,s,diger];}
+  else if(tur==='kucuk'){sonucSemboller=['🍬','🍬','🍬'];}
+  else if(tur==='orta'){sonucSemboller=['🍭','🍭','🍭'];}
+  else if(tur==='buyuk'){sonucSemboller=['🍫','🍫','🍫'];}
+  else{sonucSemboller=['💎','💎','💎'];}
+  // Karıştır, 2 aynı ve boşta sıralama belli olmasın
+  if(tur==='bos'||tur==='iki'){sonucSemboller.sort(function(){return Math.random()-0.5;});}
+  // Dönme animasyonu
+  var makaralar=[document.getElementById('m0'),document.getElementById('m1'),document.getElementById('m2')];
+  makaralar.forEach(function(m){m.classList.add('donuyor');});
+  // Çark gibi: başta hızlı, sonda yavaşlayarak dur
+  var gecikmeler=[60,60,70,80,95,110,130,155,185,220,260,300,340,380,430,480];
+  var adim=0;
+  function birTur(){
+    if(adim<gecikmeler.length){
+      makaralar.forEach(function(m){m.textContent=rastgeleSembol();});
+      adim++;setTimeout(birTur,gecikmeler[adim-1]);
+    }else{
+      setTimeout(function(){makaralar[0].textContent=sonucSemboller[0];makaralar[0].classList.remove('donuyor');},150);
+      setTimeout(function(){makaralar[1].textContent=sonucSemboller[1];makaralar[1].classList.remove('donuyor');},350);
+      setTimeout(function(){
+        makaralar[2].textContent=sonucSemboller[2];makaralar[2].classList.remove('donuyor');
+        var carpan=0;var mesaj='';
+        if(tur==='bos'){carpan=0;mesaj='😢 Hiçbiri aynı gelmedi, '+b+' COIN gitti kanka!';}
+        else if(tur==='iki'){carpan=1.2;mesaj='🙂 2 tanesi aynı! 1.2x kazandın!';}
+        else if(tur==='kucuk'){carpan=2;mesaj='🍬 Küçük Şeker! 2x kazandın!';}
+        else if(tur==='orta'){carpan=5;mesaj='🍭 Orta Şeker! 5x kazandın!';}
+        else if(tur==='buyuk'){carpan=10;mesaj='🍫 Büyük Şeker! 10x kazandın!';}
+        else{carpan=20;mesaj='💎💎💎 ELMAS! 20x JACKPOT!';}
+        var kazanc=Math.floor(b*carpan);
+        document.getElementById('kazandin').textContent=kazanc;
+        if(kazanc>0){
+          SON_BAKIYE=(SON_BAKIYE!==null?SON_BAKIYE:0)+kazanc;document.getElementById('bakiye').textContent=SON_BAKIYE;try{var _u=JSON.parse(localStorage.getItem('coin_users')||'{}');var _k=localStorage.getItem('coin_aktif');if(_k){if(!_u[_k])_u[_k]={};_u[_k].bakiye=SON_BAKIYE;localStorage.setItem('coin_users',JSON.stringify(_u));}}catch(e){}
+          if(typeof db!=='undefined'&&db){db.ref('coin_users/'+kadi+'/bakiye').transaction(function(cur){return (cur||0)+kazanc;});}
+          document.getElementById('sonuc').textContent=mesaj+' '+kazanc+' COIN aldın!';document.getElementById('sonuc').style.color='#16a34a';
+        }else{
+          document.getElementById('sonuc').textContent=mesaj;document.getElementById('sonuc').style.color='#e11d48';
+        }
+        donuyor=false;document.getElementById('cevirBtn').disabled=false;document.getElementById('cevirBtn').textContent='🎰 TEKRAR ÇEVİR';
+      },600);
+    }
+  }
+  birTur();
+}
+}
+</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
