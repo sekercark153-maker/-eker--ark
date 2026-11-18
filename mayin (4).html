@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Mayın Tarlası - COIN ARENA</title><style>
+*{box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{margin:0;min-height:100vh;background:linear-gradient(180deg,#ffe4f1,#fff7d6,#d9f9ff,#ffe4f1);padding:16px}
+header{max-width:520px;margin:0 auto 12px;display:flex;justify-content:space-between;align-items:center}
+header button{background:white;border:3px solid #ffb3d1;border-radius:999px;padding:10px 14px;font-weight:900;color:#7a2e5a;cursor:pointer}
+.bakiye{background:#7ee8a2;color:#064e2b;padding:10px 16px;border-radius:999px;font-weight:900;border:3px solid white}
+.wrap{max-width:520px;margin:0 auto;background:white;border-radius:28px;padding:18px;border:3px solid #ffb3d1;box-shadow:0 12px 30px rgba(255,120,180,.25);text-align:center}
+h2{color:#7a2e5a;margin:4px 0 2px}
+.alt{color:#9a5a7a;font-size:13px;margin-bottom:12px}
+.ayar{background:#fff5f9;border:2px solid #ffd1e3;border-radius:16px;padding:12px;text-align:left;margin-bottom:12px}
+.ayar label{display:block;font-weight:900;color:#7a2e5a;font-size:14px;margin:8px 0 4px}
+.ayar input{width:100%;padding:12px;border:2px solid #ffd1e3;border-radius:12px;font-size:16px;font-weight:800;outline:none}
+.secimler{display:flex;gap:8px}
+.secimler button{flex:1;padding:12px;border:2px solid #ffd1e3;border-radius:12px;background:white;font-weight:900;color:#7a2e5a;cursor:pointer;font-size:15px}
+.secimler button.secili{background:#ff2e63;color:white;border-color:#ff2e63}
+.basla{width:100%;background:#ff2e63;color:white;border:none;padding:15px;border-radius:16px;font-weight:900;font-size:18px;cursor:pointer;margin-top:4px}
+.grid{display:grid;gap:6px;margin:14px 0}
+.kutu{aspect-ratio:1;border:2px solid #ffd1e3;border-radius:12px;background:#ffe4f1;font-size:22px;font-weight:900;cursor:pointer;color:#7a2e5a}
+.kutu:disabled{cursor:default}
+.kutu.guvenli{background:#dcfce7;border-color:#86efac}
+.kutu.mayin{background:#fecaca;border-color:#ef4444}
+.kutu.goster{background:#fff7ed}
+.bilgi{background:#fff0a8;border:2px dashed #ffb703;border-radius:14px;padding:10px;color:#7a2e5a;font-weight:800;margin:10px 0}
+.al{width:100%;background:#22c55e;color:white;border:none;padding:15px;border-radius:16px;font-weight:900;font-size:18px;cursor:pointer;display:none;margin-top:8px}
+.yeniden{width:100%;background:#ff2e63;color:white;border:none;padding:15px;border-radius:16px;font-weight:900;font-size:18px;cursor:pointer;display:none;margin-top:8px}
+.sonuc{font-weight:900;margin:8px 0;min-height:22px;color:#7a2e5a}
+.geri{margin-top:14px;display:inline-block;background:white;padding:12px 20px;border-radius:999px;text-decoration:none;color:#7a2e5a;font-weight:800;border:2px solid #ffd1e3}
+</style><script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script><script>const firebaseConfig={apiKey:"AIzaSyD8WfOZ-JmuVZkisaK7rcpLqvYGyhPSN9o",authDomain:"coin-arena-3f0f9.firebaseapp.com",databaseURL:"https://coin-arena-3f0f9-default-rtdb.europe-west1.firebasedatabase.app",projectId:"coin-arena-3f0f9",storageBucket:"coin-arena-3f0f9.firebasestorage.app",messagingSenderId:"541797577041",appId:"1:541797577041:web:9378f7ccbda8857946a370"};if(typeof firebase!=='undefined'&&!firebase.apps.length){firebase.initializeApp(firebaseConfig);}const db=(typeof firebase!=='undefined')?firebase.database():null;</script></head><body>
+<div id="bakimOverlay" style="display:none;position:fixed;inset:0;background:#000;z-index:99999;align-items:center;justify-content:center;text-align:center;color:white;font-size:26px;font-weight:900;padding:20px;flex-direction:column;gap:12px"><div style="font-size:60px">🔧</div><div>SİTE ŞU ANDA BAKIMDA</div><div style="font-size:15px;font-weight:400;color:#cbd5e1">Lütfen daha sonra tekrar dene kanka</div></div>
+<header><button onclick="location.href='anasayfa.html'">← Oyunlara Dön</button><div class="bakiye">🪙 <span id="bakiye">...</span> COIN</div></header>
+<div class="wrap"><h2>💣 Mayın Tarlası</h2><div class="alt">Güvenli kutuyu bul, ⭐ kazan, 💣 patlarsa kaybedersin!</div>
+<div class="ayar" id="ayarKutu">
+<label>Kutu Boyutu</label><div class="secimler"><button id="b33" class="secili" onclick="boyutSec(3)">3x3</button><button id="b44" onclick="boyutSec(4)">4x4</button><button id="b55" onclick="boyutSec(5)">5x5</button></div>
+<label>Kaç COIN ile oynayacaksın? (10 - 1000)</label><input id="bahis" type="number" min="10" max="1000" placeholder="Örn: 100">
+<label>Kaç Mayın Olsun? <span id="mayinAralik" style="font-weight:400;font-size:12px">(2 - 8)</span></label><input id="mayin" type="number" min="2" max="8" placeholder="Örn: 3">
+<button class="basla" onclick="oyunuBaslat()">OYUNA BAŞLA 💣</button>
+</div>
+<div id="oyunAlani" style="display:none">
+<div class="bilgi">💰 Yatırdın: <span id="yatirilan">0</span> COIN &nbsp;|&nbsp; 🏆 Alacağın: <span id="alacagin">0</span> COIN &nbsp;|&nbsp; ✖️ Çarpan: <span id="carpan">1.00</span>x</div>
+<div class="grid" id="grid"></div>
+<div class="sonuc" id="sonuc"></div>
+<button class="al" id="alBtn" onclick="parayiAl()">💰 Parayı Al</button>
+<button class="yeniden" id="yenidenBtn" onclick="yenidenOyna()">🔄 Yeniden Oyna</button>
+</div>
+<a class="geri" href="anasayfa.html">← Oyunlara Dön</a></div>
+<script>
+// ORAN TABLOSU - KANKANIN VERDİĞİ YÜZDELER, KÂR YÜZDESİ
+// Örn: 1000 COIN, 3x3, 2 mayın, 1. yıldız %10 -> Alacağın 1100 COIN
+// 1 yıldızla bile çekilebilir, 3 yıldız şartı yok
+var ORAN = {
+  3: { 2: [10,20,30,40,80,90,100], 3: [2,4,8,20,50,100], 4: [4,8,30,50,100], 5: [10,50,150,200], 6: [50,150,300], 7: [100,500], 8: [500] },
+  4: { 5: [1,2,4,8,16,32,64,128,256,512,1024], 6: [2,4,8,16,32,64,128,256,512,1024], 7: [1,2,4,8,16,32,64,128,256], 8: [1,2,4,8,16,32,64,128], 9: [4,8,16,32,64,128,256], 10: [10,20,40,80,160,320], 11: [10,25,50,100,200], 12: [50,100,200,400], 13: [100,250,500], 14: [500,1000], 15: [10000] },
+  5: { 10: [1,2,3,4,5,8,16,32,64,128,256,512,1024,2048,4096], 11: [1,2,4,6,8,16,32,64,128,256,512,1024,2048,4096], 12: [1,2,4,8,16,32,64,128,256,512,1024,2048,4096], 13: [1,2,4,8,16,32,64,128,256,512,1024,2048], 14: [1,5,10,20,40,80,160,320,640,1280,2560], 15: [5,10,20,40,80,160,320,640,1028,2048], 16: [5,10,20,40,80,160,320,640,1028,2048], 17: [20,40,80,160,320,640,1024,2048], 18: [10,20,40,80,160,320,640], 19: [10,20,40,80,160,320,640], 20: [100,200,400,800,1600], 21: [200,400,800,1600], 22: [500,1000,2000], 23: [5000,10000], 24: [100000] }
+};
+var boyut=3, bahis=0, mayinSayisi=0, toplam=9, acilan=0, oyunBitti=false, mayinlar=[];
+var SON_BAKIYE=null;
+function minMayin(){if(boyut===3)return 2;if(boyut===4)return 5;return 10;}
+function boyutSec(b){boyut=b;toplam=b*b;['b33','b44','b55'].forEach(function(id){document.getElementById(id).classList.remove('secili');});document.getElementById('b'+b+b).classList.add('secili');var max=toplam-1;var mn=minMayin();document.getElementById('mayin').min=mn;document.getElementById('mayin').max=max;document.getElementById('mayinAralik').textContent='('+mn+' - '+max+')';}
+function bakiyeGoster(v){SON_BAKIYE=v;var el=document.getElementById('bakiye');if(el)el.textContent=v;}
+function bakiyeYereldenOku(){var kadi=localStorage.getItem('coin_aktif');if(!kadi)return null;try{var u=JSON.parse(localStorage.getItem('coin_users')||'{}');if(u[kadi]&&u[kadi].bakiye!==undefined&&u[kadi].bakiye!==null)return Number(u[kadi].bakiye);}catch(e){}return null;}
+function bakiyeYereleYaz(v){var kadi=localStorage.getItem('coin_aktif');if(!kadi)return;try{var u=JSON.parse(localStorage.getItem('coin_users')||'{}');if(!u[kadi])u[kadi]={};u[kadi].bakiye=v;localStorage.setItem('coin_users',JSON.stringify(u));}catch(e){}}
+function bakiyeFirebaseYaz(v){var kadi=localStorage.getItem('coin_aktif');if(!kadi||!db)return;db.ref('coin_users/'+kadi).update({bakiye:v});}
+function bakiyeDinle(){
+  var kadi=localStorage.getItem('coin_aktif');
+  var yerel=bakiyeYereldenOku();if(yerel!==null)bakiyeGoster(yerel);
+  if(!kadi||!db)return;
+  db.ref('coin_users/'+kadi).on('value',function(s){var v=s.val();if(v&&v.bakiye!==undefined&&v.bakiye!==null){var fb=Number(v.bakiye);bakiyeGoster(fb);bakiyeYereleYaz(fb);}});
+  db.ref('coin_users/'+kadi).once('value').then(function(s){var v=s.val();if(v&&v.bakiye!==undefined&&v.bakiye!==null){var fb=Number(v.bakiye);bakiyeGoster(fb);bakiyeYereleYaz(fb);}}).catch(function(){});
+}
+bakiyeDinle();
+function bakimKontrol(){if(typeof db==='undefined'||!db)return;db.ref('coin_bakim').on('value',function(s){var v=s.val();var ov=document.getElementById('bakimOverlay');if(v==='1'||v===true){ov.style.display='flex';document.body.style.overflow='hidden';}else{ov.style.display='none';document.body.style.overflow='';}});}
+bakimKontrol();
+function oyunuBaslat(){
+  var b=Number(document.getElementById('bahis').value);var m=Number(document.getElementById('mayin').value);
+  if(!b||b<10||b>1000){document.getElementById('sonuc').textContent='Bakiye 10 ile 1000 arası olmalı kanka!';document.getElementById('sonuc').style.color='#e11d48';return;}
+  if(!m||m<minMayin()||m>toplam-1){document.getElementById('sonuc').textContent='Mayın '+minMayin()+' ile '+(toplam-1)+' arası olmalı kanka!';document.getElementById('sonuc').style.color='#e11d48';return;}
+  if(SON_BAKIYE===null){var y=bakiyeYereldenOku();if(y!==null){bakiyeGoster(y);}else{document.getElementById('sonuc').textContent='Bakiye yükleniyor kanka, 1 saniye bekleyip tekrar dene!';document.getElementById('sonuc').style.color='#e11d48';return;}}
+  if(SON_BAKIYE<b){document.getElementById('sonuc').textContent='Bakiyen yetersiz! Bakiyen: '+SON_BAKIYE+' COIN';document.getElementById('sonuc').style.color='#e11d48';return;}
+  bahis=b;mayinSayisi=m;acilan=0;oyunBitti=false;mayinlar=[];
+  var yeniBakiye=SON_BAKIYE-b;bakiyeGoster(yeniBakiye);bakiyeYereleYaz(yeniBakiye);bakiyeFirebaseYaz(yeniBakiye);
+  if(typeof db!=='undefined'&&db){var kadi=localStorage.getItem('coin_aktif');db.ref('coin_users/'+kadi+'/harcama').transaction(function(cur){return (cur||0)+b;});db.ref('coin_users/'+kadi+'/harcamaSeviyeIcin').transaction(function(cur){return (cur||0)+b;});}
+  var idx=[];for(var i=0;i<toplam;i++)idx.push(i);
+  for(var j=0;j<m;j++){var r=Math.floor(Math.random()*idx.length);mayinlar.push(idx.splice(r,1)[0]);}
+  document.getElementById('ayarKutu').style.display='none';document.getElementById('oyunAlani').style.display='block';
+  document.getElementById('yatirilan').textContent=bahis;document.getElementById('alacagin').textContent=bahis;document.getElementById('carpan').textContent='1.00';
+  document.getElementById('alBtn').style.display='none';document.getElementById('yenidenBtn').style.display='none';
+  document.getElementById('sonuc').textContent='Kutuya tıkla kanka, ⭐ bulursan kazanıyorsun!';document.getElementById('sonuc').style.color='#7a2e5a';
+  var g=document.getElementById('grid');g.style.gridTemplateColumns='repeat('+boyut+',1fr)';g.innerHTML='';
+  for(var k=0;k<toplam;k++){var btn=document.createElement('button');btn.className='kutu';btn.textContent='?';btn.dataset.i=k;btn.onclick=(function(ii,bb){return function(){kutuTikla(ii,bb);};})(k,btn);g.appendChild(btn);}
+}
+function carpHesapla(){if(acilan===0)return 1;var liste=(ORAN[boyut]&&ORAN[boyut][mayinSayisi])||[];var yuzde=liste[acilan-1];if(yuzde===undefined)yuzde=liste[liste.length-1]||0;return 1+yuzde/100;}
+function guncelleBilgi(){var c=carpHesapla();var al=Math.floor(bahis*c);document.getElementById('carpan').textContent=c.toFixed(2);document.getElementById('alacagin').textContent=al;}
+function kutuTikla(i,btn){if(oyunBitti)return;if(btn.disabled)return;btn.disabled=true;
+  if(mayinlar.indexOf(i)!==-1){
+    btn.className='kutu mayin';btn.textContent='💣';oyunBitti=true;
+    var kutular=document.querySelectorAll('.kutu');kutular.forEach(function(k){var ii=Number(k.dataset.i);if(mayinlar.indexOf(ii)!==-1&&ii!==i){k.textContent='💣';k.className='kutu mayin goster';}k.disabled=true;});
+    document.getElementById('sonuc').textContent='💥 Mayına bastın! '+bahis+' COIN gitti kanka!';document.getElementById('sonuc').style.color='#e11d48';
+    document.getElementById('alBtn').style.display='none';document.getElementById('yenidenBtn').style.display='block';return;
+  }
+  btn.className='kutu guvenli';btn.textContent='⭐';acilan++;guncelleBilgi();
+  document.getElementById('alBtn').style.display='block';
+  document.getElementById('sonuc').textContent='⭐ Güvenli! Devam et ya da Parayı Al!';document.getElementById('sonuc').style.color='#16a34a';
+  if(acilan===(toplam-mayinSayisi)){document.getElementById('sonuc').textContent='🎉 Hepsini buldun! Paranı al kanka!';}
+}
+function parayiAl(){if(oyunBitti)return;if(acilan<1){document.getElementById('sonuc').textContent='Önce en az 1 yıldız açman lazım kanka!';return;}oyunBitti=true;var kazanc=Math.floor(bahis*carpHesapla());
+  var sonBakiye=SON_BAKIYE+kazanc;bakiyeGoster(sonBakiye);bakiyeYereleYaz(sonBakiye);bakiyeFirebaseYaz(sonBakiye);
+  document.querySelectorAll('.kutu').forEach(function(k){k.disabled=true;});
+  document.getElementById('sonuc').textContent='🎉 Kazandın! '+kazanc+' COIN aldın! (Kâr: +'+(kazanc-bahis)+')';document.getElementById('sonuc').style.color='#16a34a';
+  document.getElementById('alBtn').style.display='none';document.getElementById('yenidenBtn').style.display='block';
+}
+function yenidenOyna(){document.getElementById('oyunAlani').style.display='none';document.getElementById('ayarKutu').style.display='block';document.getElementById('sonuc').textContent='';document.getElementById('alBtn').style.display='none';document.getElementById('yenidenBtn').style.display='none';}
+</script></body></html>
